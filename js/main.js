@@ -8,8 +8,6 @@
     var dropzone = $('#droppable-zone');
     var option = $('[data-option]');
 
-    $('a[href="' + location.pathname.substr(1) + '"]').addClass('active');
-
     var execute = function() {
       try {
         var type = 'text';
@@ -79,7 +77,7 @@
         reader = new FileReader();
         var value = option.val();
         if (method.update) {
-          var batch = 1024 * 1024 * 8;
+          var batch = 1024 * 1024 * 2;
           var start = 0;
           var total = file.size;
           var current = method;
@@ -103,6 +101,7 @@
           };
           asyncUpdate();
         } else {
+          output.val('hashing...');
           reader.onload = function (event) {
             try {
               output.val(method(event.target.result, value));
@@ -116,5 +115,8 @@
     }
 
     $('#execute').click(execute);
+
+    var parts = location.pathname.split('/');
+    $('a[href="' + parts[parts.length - 1] + '"]').addClass('active');
   });
 })(jQuery, window, document);
